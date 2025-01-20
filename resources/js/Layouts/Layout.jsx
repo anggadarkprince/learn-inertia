@@ -2,8 +2,12 @@ import ThemeToggle from "@/Components/ThemeToggle.jsx";
 import noAvatar from '../../img/no-avatar.png';
 import NavItem from "@/Components/NavItem.jsx";
 import Icon from "@/Components/Icon.jsx";
+import {usePage} from "@inertiajs/react";
+import {clsx} from "clsx";
 
 export default function Layout({children}) {
+    const {flash} = usePage().props;
+
     return (
         <div className="flex h-screen bg-purple-50 dark:bg-gray-800">
             <aside className="z-20 w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 shadow-sm scroll-wrapper">
@@ -74,7 +78,18 @@ export default function Layout({children}) {
                         </ul>
                     </div>
                 </header>
-                <div className="p-4">
+                <div className="p-4 text-gray-800 dark:text-gray-200">
+                    {flash.message && (
+                        <div className={clsx([
+                            flash.status === 'danger' && 'bg-red-600',
+                            flash.status === 'warning' && 'bg-orange-400',
+                            flash.status === 'success' && 'bg-green-500',
+                            (flash.status || 'primary') === 'primary' && 'bg-blue-500',
+                            'text-white rounded text-base px-3 py-2 mb-2'
+                        ])}>
+                            {flash.message}
+                        </div>
+                    )}
                     {children}
                 </div>
             </div>

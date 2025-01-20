@@ -6,6 +6,7 @@
     <title>Quick Turns</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     @viteReactRefresh
+    @routes
     @vite(['resources/css/app.css', 'resources/js/App.jsx'])
     @inertiaHead
 </head>

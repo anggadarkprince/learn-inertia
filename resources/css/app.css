@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    p {
+        @apply text-base;
+    }
+}
+
+.scroll-wrapper {
+    scrollbar-color: rgb(37, 99, 235 / var(--tw-bg-opacity)) rgb(226 232 240 / var(--tw-bg-opacity));
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+}
+.dark.scroll-wrapper {
+    scrollbar-color: rgb(51 65 85 / var(--tw-bg-opacity)) rgb(15 23 42 / var(--tw-bg-opacity));
+}
+
+.scroll-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-track {
+    @apply bg-slate-200 dark:bg-slate-800
+}
+
+.scroll-wrapper::-webkit-scrollbar-thumb {
+    @apply bg-indigo-500 hover:bg-indigo-300 dark:bg-slate-900 dark:hover:bg-slate-950 rounded-lg bg-clip-content
+}

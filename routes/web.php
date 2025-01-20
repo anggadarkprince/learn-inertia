@@ -1,13 +1,19 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $user = \App\Models\User::find(1);
-    return \Inertia\Inertia::render('Users/Show', [
-        'user' => $user
-    ]);
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('auth.login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('auth.register');
+Route::post('/register', [AuthController::class, 'register']);
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');

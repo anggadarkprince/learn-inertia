@@ -5,20 +5,15 @@ import Icon from "@/Components/Icon.jsx";
 import {usePage} from "@inertiajs/react";
 import {clsx} from "clsx";
 
-export default function Layout({children}) {
+export default function App({children}) {
     const {flash} = usePage().props;
-
     return (
         <div className="flex h-screen bg-purple-50 dark:bg-gray-800">
             <aside className="z-20 w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 shadow-sm scroll-wrapper">
                 <div className="py-4 text-gray-500 dark:text-gray-400">
                     <a className="flex gap-2 items-center justify-center border-b dark:border-b-gray-700 pb-2 mx-4 text-lg font-medium text-gray-800 dark:text-gray-200 mb-4" href="/">
-                        <svg className="w-5 h-5" aria-hidden="true" fill="none" strokeLinecap="round"
-                             strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                            <path
-                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                        </svg>
-                        <span>Quick<span className="text-purple-600 font-bold">Turns</span></span>
+                        <Icon name="cards"/>
+                        <p>Quick<span className="text-purple-600 font-bold">Turns</span></p>
                     </a>
                     <div className="flex items-center gap-3 px-6 mb-4">
                         <img src={noAvatar} className="w-10 h-10 rounded-full" alt="Avatar"/>
@@ -36,19 +31,19 @@ export default function Layout({children}) {
                     </div>
                     <ul>
                         <li className="relative px-6 py-2">
-                            <NavItem active={true} icon={'home'} href={'/'}>Dashboard</NavItem>
+                            <NavItem active={component === 'Dashboard/Index'} icon={'home'} href={'/'}>Dashboard</NavItem>
                         </li>
                         <li className="relative px-6 py-2">
-                            <NavItem icon={'task'} href={'/categories'}>Categories</NavItem>
+                            <NavItem active={url.startsWith('/categories')} icon={'task'} href={'/categories'}>Categories</NavItem>
                         </li>
                         <li className="relative px-6 py-2">
-                            <NavItem icon={'stack'} href={'/tickets'}>Tickets</NavItem>
+                            <NavItem active={url.startsWith('/tickets')} icon={'stack'} href={'/tickets'}>Tickets</NavItem>
                         </li>
                         <li className="relative px-6 py-2">
-                            <NavItem icon={'cards'} href={'/queues'}>Queues</NavItem>
+                            <NavItem active={url.startsWith('/queues')} icon={'cards'} href={'/queues'}>Queues</NavItem>
                         </li>
                         <li className="relative px-6 py-2">
-                            <NavItem icon={'chart'} href={'/reports'}>Reports</NavItem>
+                            <NavItem active={url.startsWith('/reports')} icon={'chart'} href={'/reports'}>Reports</NavItem>
                         </li>
                     </ul>
                 </div>

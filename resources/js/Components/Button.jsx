@@ -1,30 +1,38 @@
 import {clsx} from "clsx";
+import {Link} from "@inertiajs/react";
 
-export default function Button({type = 'button', block = false, color = 'purple', disabled, children}) {
-    let colorClass = 'bg-purple-600 active:bg-purple-600 hover:bg-purple-700 focus:shadow-outline-purple disabled:bg-purple-400';
+export default function Button({type = 'button', block = false, color = 'purple', disabled, href, onClick, children}) {
+    const Component = href ? Link : 'button';
+    let colorClass = 'bg-purple-600 active:bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400';
     switch (color) {
         case 'red':
         case 'danger':
-            colorClass = 'bg-red-600 active:bg-red-600 hover:bg-red-700 focus:shadow-outline-red disabled:bg-red-400';
+            colorClass = 'bg-red-600 active:bg-red-700 hover:bg-red-500 disabled:bg-red-400';
             break;
         case 'green':
         case 'success':
-            colorClass = 'bg-green-600 active:bg-green-600 hover:bg-green-700 focus:shadow-outline-green disabled:bg-green-400';
+            colorClass = 'bg-green-600 active:bg-green-700 hover:bg-green-500 disabled:bg-green-400';
             break;
-        case 'yellow':
+        case 'orange':
         case 'warning':
-            colorClass = 'bg-yellow-600 active:bg-yellow-600 hover:bg-yellow-700 focus:shadow-outline-yellow disabled:bg-yellow-400';
+            colorClass = 'bg-orange-500 active:bg-orange-600 hover:bg-orange-400 disabled:bg-orange-400';
+            break;
+        case 'light':
+            colorClass = 'bg-gray-100 active:bg-gray-100 hover:bg-gray-50 disabled:bg-gray-100';
             break;
     }
     return (
-        <button type={type}
-                className={clsx([
-                    'px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 border border-transparent rounded-lg focus:outline-none',
-                    block ? 'w-full block' : 'inline-block',
-                    colorClass,
-                ])}
-                disabled={disabled}>
+        <Component
+            {...(href ? {href} : {type})}
+            onClick={onClick}
+            className={clsx([
+                'px-4 py-2 text-sm inline-flex justify-center items-center gap-2 font-medium leading-5 text-center transition-colors duration-150 border border-transparent rounded-lg focus:outline-none',
+                block ? 'w-full block' : 'inline-block',
+                color === 'light' ? (disabled ? 'text-gray-500' : 'text-gray-800') : 'text-white',
+                colorClass,
+            ])}
+            disabled={disabled}>
             {children}
-        </button>
+        </Component>
     )
 }

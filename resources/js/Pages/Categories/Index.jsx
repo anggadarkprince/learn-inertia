@@ -3,6 +3,9 @@ import {formatDate} from "date-fns";
 import {route} from "ziggy-js";
 import App from "@/Layouts/App.jsx";
 import Pagination from "@/Components/Pagination.jsx";
+import {Dropdown} from "@/Components/Dropdown.jsx";
+import Icon from "@/Components/Icon.jsx";
+import Button from "@/Components/Button.jsx";
 
 export default function Index({categories}) {
     const handlePageChange = (url) => {
@@ -18,16 +21,15 @@ export default function Index({categories}) {
     return (
         <App>
             <Head title="Categories" />
-            <div className="rounded bg-white dark:bg-gray-900 p-4">
+            <div className="rounded bg-white dark:bg-gray-900 p-5">
                 <div className="flex items-center justify-between mb-3">
                     <div>
                         <h1 className="text-lg font-medium">Categories</h1>
                         <p className="text-sm text-gray-500 dark:text-gray-400">All category data</p>
                     </div>
-                    <Link href={route('categories.create')}
-                          className="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    <Button href={route('categories.create')} color="success">
                         Create
-                    </Link>
+                    </Button>
                 </div>
                 <table className="w-full text-base">
                     <thead>
@@ -66,18 +68,24 @@ const CategoryData = ({categories}) => {
             <td className="px-1.5 py-1">{category.category}</td>
             <td className="px-1.5 py-1">{category?.description || '-'}</td>
             <td className="px-1.5 py-1">{formatDate(category?.created_at, 'dd MMM yyyy HH:mm')}</td>
-            <td className="px-1.5 py-1">
-                <Link href={route('categories.show', {category})} prefetch>
-                    View
-                </Link>
-                |
-                <Link href={route('categories.edit', {category})}>
-                    Edit
-                </Link>
-                |
-                <Link href={route('categories.destroy', {category})} method="delete" as="button">
-                    Delete
-                </Link>
+            <td className="px-1.5 py-1 text-center">
+                <Dropdown>
+                    <Dropdown.Toggle>
+                        <Button>Action <Icon name="chevron-down" size="sm"/></Button>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item href={route('categories.show', {category})} prefetch>
+                            <Icon name="eye"/> View
+                        </Dropdown.Item>
+                        <Dropdown.Item href={route('categories.edit', {category})}>
+                            <Icon name="pencil"/> Edit
+                        </Dropdown.Item>
+                        <Dropdown.Separator/>
+                        <Dropdown.Item href={route('categories.destroy', {category})} method="delete" as="button">
+                            <Icon name="trash"/> Delete
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </td>
         </tr>
     ))

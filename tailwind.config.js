@@ -15,11 +15,11 @@ export default {
             fontFamily: {
                 sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
-        },
-        fontSize: {
-            xs: ['0.7rem'],
-            sm: ['0.8rem'],
-            base: ['0.9rem'],
+            fontSize: {
+                xs: ['0.7rem'],
+                sm: ['0.8rem'],
+                base: ['0.9rem'],
+            },
         },
     },
     darkMode: 'selector',

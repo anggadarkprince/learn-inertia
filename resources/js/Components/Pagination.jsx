@@ -11,8 +11,8 @@ export default function Pagination({links, onPageChange, data}) {
                     dangerouslySetInnerHTML={{__html: link.label}}
                     className={clsx([
                         'px-2 py-1 rounded text-sm text-center',
-                        link.active ? 'bg-purple-500 hover:bg-purple-400 text-white' : 'bg-gray-200 dark:bg-gray-800',
-                        !link.url ? `bg-gray-300 text-gray-500 dark:text-gray-400` : 'hover:bg-purple-400 hover:text-white'
+                        link.active ? 'bg-purple-500 hover:bg-purple-400 text-white' : 'bg-gray-100 dark:bg-gray-800',
+                        !link.url ? `bg-gray-100 text-gray-400 dark:text-gray-400` : 'hover:bg-purple-400 hover:text-white'
                     ])}
                     onClick={() => {
                         if (onPageChange) {

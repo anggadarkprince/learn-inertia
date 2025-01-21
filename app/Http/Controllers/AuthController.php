@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Response;
 
 class AuthController extends Controller
@@ -20,7 +21,6 @@ class AuthController extends Controller
     {
         return inertia('Auth/Login');
     }
-
 
     /**
      * Handle a login request to the application.
@@ -67,7 +67,7 @@ class AuthController extends Controller
 
             return redirect()->route('auth.login')->with([
                 'status' => 'success',
-                'message' => __('You are successfully registered, waiting for approval!'),
+                'message' => __('You are successfully registered!'),
             ]);
         } catch (Exception $e) {
             return back()->withInput()->withErrors([
@@ -75,5 +75,15 @@ class AuthController extends Controller
                 'message' => $e->getMessage(),
             ]);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $this->authService->logout($request);
+
+        return redirect()->route('auth.login')->with([
+            'status' => 'warning',
+            'message' => __('You are successfully logged out!'),
+        ]);
     }
 }

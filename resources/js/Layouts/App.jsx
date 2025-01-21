@@ -4,6 +4,7 @@ import NavItem from "@/Components/NavItem.jsx";
 import Icon from "@/Components/Icon.jsx";
 import {usePage} from "@inertiajs/react";
 import Alert from "@/Components/Alert.jsx";
+import {route} from "ziggy-js";
 
 export default function App({children}) {
     const {props: {flash, errors}, url, component} = usePage();
@@ -44,6 +45,11 @@ export default function App({children}) {
                         </li>
                         <li className="relative px-6 py-2">
                             <NavItem active={url.startsWith('/reports')} icon={'chart'} href={'/reports'}>Reports</NavItem>
+                        </li>
+                        <li className="relative px-6 py-2">
+                            <NavItem icon={'logout'} href={route('auth.logout')} method="post" as="button">
+                                Logout
+                            </NavItem>
                         </li>
                     </ul>
                 </div>

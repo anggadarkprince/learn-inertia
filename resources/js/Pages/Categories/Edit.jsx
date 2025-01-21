@@ -51,7 +51,7 @@ export default function Edit({category}) {
                         required/>
 
                     <div>
-                        <Button type="submit" disabled={processing}>
+                        <Button type="submit" disabled={processing} color="warning">
                             Update Category
                         </Button>
                     </div>

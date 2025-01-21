@@ -48,7 +48,7 @@ export default function App({children}) {
                     </ul>
                 </div>
             </aside>
-            <div className="flex flex-col flex-1 w-full">
+            <div className="flex flex-col flex-1 w-full overflow-y-auto scroll-wrapper">
                 <header className="z-10 py-4 bg-white dark:bg-gray-800 shadow-sm">
                     <div
                         className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">

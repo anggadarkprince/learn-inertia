@@ -1,12 +1,20 @@
-import {Head, Link, usePage} from '@inertiajs/react'
+import {Deferred, Head, Link, router, usePage} from '@inertiajs/react'
 import {formatDate} from "date-fns";
 import {route} from "ziggy-js";
 import App from "@/Layouts/App.jsx";
+import Pagination from "@/Components/Pagination.jsx";
 
 export default function Index({categories}) {
-    const { props } = usePage();
-    const { status, message } = props.flash || {};
-    console.log(status, message);
+    const handlePageChange = (url) => {
+        if (!url) return;
+
+        router.visit(url, {
+            only: ['categories'], // Perform partial reload
+            preserveState: true, // Keep component state
+            preserveScroll: true, // Retain scroll position
+        });
+    };
+
     return (
         <App>
             <Head title="Categories" />
@@ -21,7 +29,7 @@ export default function Index({categories}) {
                         Create
                     </Link>
                 </div>
-                <table className="w-full">
+                <table className="w-full text-base">
                     <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-600">
                         <th className="px-1.5 py-1">No</th>
@@ -32,26 +40,45 @@ export default function Index({categories}) {
                     </tr>
                     </thead>
                     <tbody>
-                    {categories.data.map((category, index) => (
-                        <tr key={category.id} className="border-b border-gray-200 dark:border-gray-600">
-                            <td className="px-1.5 py-1 text-center">{categories.from + index}</td>
-                            <td className="px-1.5 py-1">{category.category}</td>
-                            <td className="px-1.5 py-1">{category?.description || '-'}</td>
-                            <td className="px-1.5 py-1">{formatDate(category?.created_at, 'dd MMM yyyy HH:mm')}</td>
-                            <td className="px-1.5 py-1">
-                                <Link href={route('categories.edit', {category})}>
-                                    Edit
-                                </Link>
-                                |
-                                <Link href={route('categories.destroy', {category})} method="delete" as="button">
-                                    Delete
-                                </Link>
+                    <Deferred data="categories" fallback={
+                        <tr>
+                            <td colSpan="5" className="text-center py-2">
+                                Loading...
                             </td>
                         </tr>
-                    ))}
+                    }>
+                        <CategoryData categories={categories}/>
+                    </Deferred>
                     </tbody>
                 </table>
+                <div className="mt-4 flex justify-center">
+                    <Pagination links={categories?.links} onPageChange={handlePageChange}/>
+                </div>
             </div>
         </App>
     )
+}
+
+const CategoryData = ({categories}) => {
+    return categories?.data?.map((category, index) => (
+        <tr key={category.id} className="border-b border-gray-200 dark:border-gray-600">
+            <td className="px-1.5 py-1 text-center">{categories.from + index}</td>
+            <td className="px-1.5 py-1">{category.category}</td>
+            <td className="px-1.5 py-1">{category?.description || '-'}</td>
+            <td className="px-1.5 py-1">{formatDate(category?.created_at, 'dd MMM yyyy HH:mm')}</td>
+            <td className="px-1.5 py-1">
+                <Link href={route('categories.show', {category})} prefetch>
+                    View
+                </Link>
+                |
+                <Link href={route('categories.edit', {category})}>
+                    Edit
+                </Link>
+                |
+                <Link href={route('categories.destroy', {category})} method="delete" as="button">
+                    Delete
+                </Link>
+            </td>
+        </tr>
+    ))
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\Categories\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
@@ -19,9 +20,10 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = $this->categoryService->getAllPaginated($request);
-
-        return inertia("Categories/Index", compact("categories"));
+        return inertia("Categories/Index", [
+            'title' => 'Categories',
+            'categories' => Inertia::defer(fn () => $this->categoryService->getAllPaginated($request))
+        ]);
     }
 
     /**

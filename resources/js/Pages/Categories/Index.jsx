@@ -1,14 +1,14 @@
 import {Head, Link, usePage} from '@inertiajs/react'
-import Layout from "../../Layouts/Layout.jsx";
 import {formatDate} from "date-fns";
 import {route} from "ziggy-js";
+import App from "@/Layouts/App.jsx";
 
 export default function Index({categories}) {
     const { props } = usePage();
     const { status, message } = props.flash || {};
     console.log(status, message);
     return (
-        <Layout>
+        <App>
             <Head title="Categories" />
             <div className="rounded bg-white dark:bg-gray-900 p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -52,6 +52,6 @@ export default function Index({categories}) {
                     </tbody>
                 </table>
             </div>
-        </Layout>
+        </App>
     )
 }

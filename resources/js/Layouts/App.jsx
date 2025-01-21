@@ -3,10 +3,10 @@ import noAvatar from '../../img/no-avatar.png';
 import NavItem from "@/Components/NavItem.jsx";
 import Icon from "@/Components/Icon.jsx";
 import {usePage} from "@inertiajs/react";
-import {clsx} from "clsx";
+import Alert from "@/Components/Alert.jsx";
 
 export default function App({children}) {
-    const {flash} = usePage().props;
+    const {props: {flash, errors}, url, component} = usePage();
     return (
         <div className="flex h-screen bg-purple-50 dark:bg-gray-800">
             <aside className="z-20 w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 shadow-sm scroll-wrapper">
@@ -74,16 +74,10 @@ export default function App({children}) {
                     </div>
                 </header>
                 <div className="p-4 text-gray-800 dark:text-gray-200">
-                    {flash.message && (
-                        <div className={clsx([
-                            flash.status === 'danger' && 'bg-red-600',
-                            flash.status === 'warning' && 'bg-orange-400',
-                            flash.status === 'success' && 'bg-green-500',
-                            (flash.status || 'primary') === 'primary' && 'bg-blue-500',
-                            'text-white rounded text-base px-3 py-2 mb-2'
-                        ])}>
-                            {flash.message}
-                        </div>
+                    {(flash.message || errors.message) && (
+                        <Alert color={flash.status || errors.status}>
+                            {flash.message || errors.message}
+                        </Alert>
                     )}
                     {children}
                 </div>

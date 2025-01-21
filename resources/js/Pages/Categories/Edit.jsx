@@ -1,6 +1,6 @@
 import {Head, useForm} from '@inertiajs/react'
-import Layout from "../../Layouts/Layout.jsx";
 import {route} from "ziggy-js";
+import App from "@/Layouts/App.jsx";
 
 export default function Edit({category}) {
     const {
@@ -22,7 +22,7 @@ export default function Edit({category}) {
     }
 
     return (
-        <Layout>
+        <App>
             <Head title="Create Category" />
             <div className="rounded bg-white dark:bg-gray-900 p-4">
                 <h1 className="text-lg font-medium mb-3">Edit category</h1>
@@ -66,6 +66,6 @@ export default function Edit({category}) {
                     </div>
                 </form>
             </div>
-        </Layout>
+        </App>
     )
 }

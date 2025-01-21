@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Icon from "@/Components/Icon.jsx";
 
-export default function ThemeToggle() {
+export default function ThemeToggle({showText}) {
     const [theme, setTheme] = useState(
         localStorage.getItem('theme') || 'light' // Default to 'light' theme
     );
@@ -26,9 +26,14 @@ export default function ThemeToggle() {
     return (
         <button
             onClick={toggleTheme}
-            className="rounded-md focus:outline-none focus:shadow-outline-purple"
+            className="flex gap-1.5 items-center rounded-md focus:outline-none focus:shadow-outline-purple"
         >
             {theme === 'dark' ? <Icon name={'sun'}/> : <Icon name={'moon'}/>}
+            {showText && (
+                <span className="text-sm font-semibold">
+                    Switch {theme === 'dark' ? 'Light' : 'Dark'}
+                </span>
+            )}
         </button>
     );
 }

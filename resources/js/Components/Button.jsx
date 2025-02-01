@@ -1,8 +1,8 @@
 import {clsx} from "clsx";
 import {Link} from "@inertiajs/react";
 
-export default function Button({type = 'button', block = false, color = 'purple', disabled, href, onClick, children}) {
-    const Component = href ? Link : 'button';
+export default function Button({type = 'button', as = 'button', block = false, size = 'base', color = 'purple', disabled, href, onClick, children}) {
+    const Component = (href || as === 'a') ? Link : as;
     let colorClass = 'bg-purple-600 active:bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400';
     switch (color) {
         case 'red':
@@ -26,7 +26,13 @@ export default function Button({type = 'button', block = false, color = 'purple'
             {...(href ? {href} : {type})}
             onClick={onClick}
             className={clsx([
-                'px-4 py-2 text-sm inline-flex justify-center items-center gap-2 font-medium leading-5 text-center transition-colors duration-150 border border-transparent rounded-lg focus:outline-none',
+                [
+                    size === 'xl' && 'px-6 py-4 text-xl rounded-lg',
+                    size === 'lg' && 'px-5 py-3 text-lg rounded-lg',
+                    size === 'sm' && 'px-3 py-1 text-sm rounded',
+                    (size || 'base') === 'base' && 'px-4 py-2 text-base rounded-lg',
+                ],
+                'text-sm inline-flex justify-center items-center gap-2 font-medium leading-5 text-center transition-colors duration-150 border border-transparent focus:outline-none',
                 block ? 'w-full block' : 'inline-block',
                 color === 'light' ? (disabled ? 'text-gray-500' : 'text-gray-800') : 'text-white',
                 colorClass,

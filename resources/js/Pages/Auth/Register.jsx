@@ -22,7 +22,8 @@ export default function Register() {
         password: "",
         password_confirmation: "",
         agreement: '',
-    })
+    });
+    const currentMessage = flash.message || errors.message;
 
     function handleChange(e) {
         const key = e.target.name;
@@ -51,9 +52,9 @@ export default function Register() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">Create new account</p>
             </div>
 
-            {(flash.message || errors.message) && (
-                <Alert color={flash.status || errors.status}>
-                    {flash.message || errors.message}
+            {(!processing && currentMessage) && (
+                <Alert color={flash.status || errors.status} dismissible={true} key={`${currentMessage}-${Date.now()}`}>
+                    {currentMessage}
                 </Alert>
             )}
 
@@ -130,9 +131,11 @@ export default function Register() {
                     {errors.agreement && <FormError>{errors.agreement}</FormError>}
                 </div>
 
-                <Button type="submit" disabled={processing}>
-                    Create account
-                </Button>
+                <div className="mt-3">
+                    <Button type="submit" block disabled={processing}>
+                        Create account
+                    </Button>
+                </div>
             </form>
 
             <p className="mt-3 text-center">

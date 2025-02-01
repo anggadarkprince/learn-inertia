@@ -2,13 +2,13 @@ import {Head, Link, router, usePage} from '@inertiajs/react'
 import {route} from "ziggy-js";
 import Auth from "@/Layouts/Auth.jsx";
 import Alert from "@/Components/Alert.jsx";
-import FormError from "@/Components/ErrorText.jsx";
 import {useState} from "react";
 import Button from "@/Components/Button.jsx";
 import Input from "@/Components/Input.jsx";
 
 export default function Login() {
     const {flash, errors} = usePage().props;
+    const currentMessage = flash.message || errors.message;
     const [data, setData] = useState({
         username: "",
         password: "",
@@ -49,9 +49,9 @@ export default function Login() {
                 </h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Sign in to your account</p>
             </div>
-            {(flash.message || errors.message) && (
-                <Alert color={flash.status || errors.status}>
-                    {flash.message || errors.message}
+            {(!isSubmitting && currentMessage) && (
+                <Alert color={flash.status || errors.status} dismissible={true} key={`${currentMessage}-${Date.now()}`}>
+                    {currentMessage}
                 </Alert>
             )}
 
@@ -77,9 +77,11 @@ export default function Login() {
                     error={errors.password}
                     required/>
 
-                <Button type="submit" disabled={isSubmitting}>
-                    Log in
-                </Button>
+                <div className="mt-3">
+                    <Button type="submit" block disabled={isSubmitting}>
+                        Log in
+                    </Button>
+                </div>
             </form>
             <p className="mt-3 text-center">
                 <Link href={route('auth.register')}

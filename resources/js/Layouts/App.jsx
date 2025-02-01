@@ -7,7 +7,8 @@ import Alert from "@/Components/Alert.jsx";
 import {route} from "ziggy-js";
 
 export default function App({children}) {
-    const {props: {flash, errors}, url, component} = usePage();
+    const {props: {flash, errors, auth}, url, component} = usePage();
+
     return (
         <div className="flex h-screen bg-purple-50 dark:bg-gray-800">
             <aside className="z-20 w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 shadow-sm scroll-wrapper">
@@ -17,10 +18,13 @@ export default function App({children}) {
                         <p>Quick<span className="text-purple-600 font-bold">Turns</span></p>
                     </a>
                     <div className="flex items-center gap-3 px-6 mb-4">
-                        <img src={noAvatar} className="w-10 h-10 rounded-full" alt="Avatar"/>
+                        <img src={auth.user?.avatar_url ? auth.user.avatar_url : noAvatar} className="w-10 h-10 rounded-full object-cover"
+                             alt="Avatar"/>
                         <div>
-                            <h4 className="font-semibold text-base text-gray-800 dark:text-gray-200 leading-tight">Angga Ari Wijaya</h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 leading-snug">angga@mail.com</p>
+                            <h4 className="font-semibold text-base text-gray-800 dark:text-gray-200 leading-tight">
+                                {auth.user?.name}
+                            </h4>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 leading-snug">{auth.user?.email}</p>
                         </div>
                     </div>
                     <div className="px-6 mb-4">
@@ -32,19 +36,34 @@ export default function App({children}) {
                     </div>
                     <ul>
                         <li className="relative px-6 py-2">
-                            <NavItem active={component === 'Dashboard/Index'} icon={'home'} href={'/'}>Dashboard</NavItem>
+                            <NavItem active={component === 'Dashboard/Index'} icon={'home'} href={'/'}>
+                                Dashboard
+                            </NavItem>
                         </li>
                         <li className="relative px-6 py-2">
-                            <NavItem active={url.startsWith('/categories')} icon={'task'} href={'/categories'}>Categories</NavItem>
+                            <NavItem active={url.startsWith('/users')} icon={'user'} href={route('users.index')}>
+                                Users
+                            </NavItem>
                         </li>
                         <li className="relative px-6 py-2">
-                            <NavItem active={url.startsWith('/tickets')} icon={'stack'} href={'/tickets'}>Tickets</NavItem>
+                            <NavItem active={url.startsWith('/categories')} icon={'task'} href={route('categories.index')}>
+                                Categories
+                            </NavItem>
                         </li>
                         <li className="relative px-6 py-2">
-                            <NavItem active={url.startsWith('/queues')} icon={'cards'} href={'/queues'}>Queues</NavItem>
+                            <NavItem active={url.startsWith('/tickets')} icon={'stack'} href={'/tickets'}>
+                                Tickets
+                            </NavItem>
                         </li>
                         <li className="relative px-6 py-2">
-                            <NavItem active={url.startsWith('/reports')} icon={'chart'} href={'/reports'}>Reports</NavItem>
+                            <NavItem active={url.startsWith('/queues')} icon={'cards'} href={'/queues'}>
+                                Queues
+                            </NavItem>
+                        </li>
+                        <li className="relative px-6 py-2">
+                            <NavItem active={url.startsWith('/reports')} icon={'chart'} href={'/reports'}>
+                                Reports
+                            </NavItem>
                         </li>
                         <li className="relative px-6 py-2">
                             <NavItem icon={'logout'} href={route('auth.logout')} method="post" as="button">
@@ -56,8 +75,7 @@ export default function App({children}) {
             </aside>
             <div className="flex flex-col flex-1 w-full overflow-y-auto scroll-wrapper">
                 <header className="z-10 py-4 bg-white dark:bg-gray-800 shadow-sm">
-                    <div
-                        className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
+                <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
                         <button
                             className="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple">
                             <Icon name={'menu'}/>
@@ -81,7 +99,7 @@ export default function App({children}) {
                 </header>
                 <div className="p-4 text-gray-800 dark:text-gray-200">
                     {(flash.message || errors.message) && (
-                        <Alert color={flash.status || errors.status}>
+                        <Alert color={flash.status || errors.status} dismissible={true}>
                             {flash.message || errors.message}
                         </Alert>
                     )}

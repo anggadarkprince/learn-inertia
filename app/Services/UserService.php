@@ -5,12 +5,17 @@ namespace App\Services;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
 
 class UserService
 {
     public function __construct(private readonly UserRepository $userRepository) {}
+
+    public function getAllPaginated(Request $request)
+    {
+        return $this->userRepository->getAllPaginated($request);
+    }
 
     public function create($data): User
     {
@@ -18,17 +23,7 @@ class UserService
             $result = $avatar->store('avatars/' . date('Y/m'));
             $data['avatar'] = $result ?: null;
         }
-        $user = DB::transaction(function () use ($data) {
-            $user = $this->userRepository->create($data);
-
-            if (isset($data['roles'])) {
-                foreach ($data['roles'] as $branchId => $role) {
-                    $user->roles()->attach($role, ['id_branch' => $branchId]);
-                }
-            }
-
-            return $user;
-        });
+        $user = $this->userRepository->create($data);
 
         event(new Registered($user));
 
@@ -49,5 +44,10 @@ class UserService
         }
 
         return $this->userRepository->update($user, $data);
+    }
+
+    public function delete($user): bool
+    {
+        return $this->userRepository->delete($user);
     }
 }

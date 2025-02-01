@@ -12,7 +12,7 @@ export const Dropdown = ({children}) => {
 
 Dropdown.Toggle = ({children}) => {
     return (
-        <MenuButton as="span">
+        <MenuButton as="span" className="inline-block">
             {children}
         </MenuButton>
     );
@@ -20,7 +20,7 @@ Dropdown.Toggle = ({children}) => {
 
 Dropdown.Menu = ({children}) => {
     return (
-        <MenuItems anchor="bottom end" className="bg-white text-base shadow rounded mt-1 py-2 min-w-32">
+        <MenuItems anchor="bottom end" className="bg-white dark:bg-gray-700 text-base dark:text-gray-200 shadow rounded my-1 py-2 min-w-32">
             {children}
         </MenuItems>
     );
@@ -34,7 +34,7 @@ Dropdown.Item = ({children, href, prefetch, method, ...props}) => {
                     {...(prefetch !== undefined ? {prefetch} : {})}
                     {...(method ? {href, method} : {href})}
                     {...props}
-                    className="px-3 py-1.5 w-full flex gap-2 data-[focus]:bg-purple-50"
+                    className="px-3 py-1.5 w-full flex gap-2 data-[focus]:bg-purple-50 dark:data-[focus]:bg-gray-800"
                 >
                     {children}
                 </Link>
@@ -44,5 +44,5 @@ Dropdown.Item = ({children, href, prefetch, method, ...props}) => {
 };
 
 Dropdown.Separator = () => {
-    return <MenuSeparator className="my-1 h-px bg-gray-100"/>;
+    return <MenuSeparator className="my-1 h-px bg-gray-100 dark:bg-gray-800"/>;
 };

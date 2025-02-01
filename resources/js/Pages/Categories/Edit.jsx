@@ -50,7 +50,7 @@ export default function Edit({category}) {
                         error={errors.description}
                         required/>
 
-                    <div>
+                    <div className="mt-4 text-end">
                         <Button type="submit" disabled={processing} color="warning">
                             Update Category
                         </Button>

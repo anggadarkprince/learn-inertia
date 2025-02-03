@@ -11,10 +11,10 @@ export default function App({children}) {
 
     return (
         <div className="flex h-screen bg-purple-50 dark:bg-gray-800">
-            <aside className="z-20 w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 shadow-sm scroll-wrapper">
+            <aside className="z-20 w-64 overflow-y-auto bg-white dark:bg-gray-900 md:block flex-shrink-0 shadow-sm scroll-wrapper my-3 ms-3 rounded-lg">
                 <div className="py-4 text-gray-500 dark:text-gray-400">
-                    <a className="flex gap-2 items-center justify-center border-b dark:border-b-gray-700 pb-2 mx-4 text-lg font-medium text-gray-800 dark:text-gray-200 mb-4" href="/">
-                        <Icon name="cards"/>
+                    <a className="flex gap-2 items-center justify-center dark:border-b-gray-700 pb-2 mx-4 text-xl font-medium text-gray-800 dark:text-gray-200 mb-4" href="/">
+                        <Icon name="stack"/>
                         <p>Quick<span className="text-purple-600 font-bold">Turns</span></p>
                     </a>
                     <div className="flex items-center gap-3 px-6 mb-4">
@@ -74,8 +74,8 @@ export default function App({children}) {
                 </div>
             </aside>
             <div className="flex flex-col flex-1 w-full overflow-y-auto scroll-wrapper">
-                <header className="z-10 py-4 bg-white dark:bg-gray-800 shadow-sm">
-                <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
+                <header className="z-10 py-4 bg-white dark:bg-gray-900 shadow-sm mx-3 mt-3 rounded-lg">
+                    <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
                         <button
                             className="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple">
                             <Icon name={'menu'}/>
@@ -86,7 +86,7 @@ export default function App({children}) {
                                     <Icon name={'magnify'}/>
                                 </div>
                                 <input
-                                    className="w-full ps-10 py-2 pe-2 text-base text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+                                    className="w-full ps-10 py-2 pe-2 text-base text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-800 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                                     type="text" placeholder="Search for tickets..." aria-label="Search"/>
                             </div>
                         </div>
@@ -97,7 +97,7 @@ export default function App({children}) {
                         </ul>
                     </div>
                 </header>
-                <div className="p-4 text-gray-800 dark:text-gray-200">
+                <div className="p-3 text-gray-800 dark:text-gray-200">
                     {(flash.message || errors.message) && (
                         <Alert color={flash.status || errors.status} dismissible={true}>
                             {flash.message || errors.message}

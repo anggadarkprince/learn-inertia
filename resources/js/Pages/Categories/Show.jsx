@@ -9,7 +9,7 @@ export default function Show({category}) {
         <App>
             <Head title={category.category}/>
             <div className="space-y-3">
-                <div className="rounded bg-white dark:bg-gray-900 p-4">
+                <div className="rounded bg-white dark:bg-gray-900 p-5">
                     <h1 className="text-lg font-medium mb-3">View category</h1>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-base mb-3">
@@ -38,7 +38,7 @@ export default function Show({category}) {
                     </div>
                 </div>
 
-                <div className="flex justify-between rounded bg-white dark:bg-gray-900 p-4">
+                <div className="flex justify-between rounded bg-white dark:bg-gray-900 p-5">
                     <Button onClick={() => window.history.back()} disabled={window.history.length <= 1} color="light">
                         ← Back
                     </Button>

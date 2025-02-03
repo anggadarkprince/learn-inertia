@@ -34,7 +34,7 @@ export default function Edit({user}) {
     return (
         <App>
             <Head title="Edit User" />
-            <div className="rounded bg-white dark:bg-gray-900 p-4">
+            <div className="rounded bg-white dark:bg-gray-900 p-5">
                 <h1 className="text-lg font-medium mb-3">Edit user</h1>
                 <form onSubmit={submit} className="flex flex-col gap-4">
                     <Input

@@ -3,9 +3,9 @@ import ThemeToggle from "@/Components/ThemeToggle.jsx";
 
 export default function Auth({children}) {
     return (
-        <div className="flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+        <div className="flex flex-col items-center p-6 bg-purple-50 dark:bg-gray-900 min-h-screen">
             <div className="flex gap-3 items-center text-center mb-6 dark:text-gray-100 text-gray-800 mt-3">
-                <Icon name="cards" size='lg'/>
+                <Icon name="stack" size='lg'/>
                 <p className="text-2xl">
                     Quick<span className="text-purple-600 font-bold">Turns</span>
                 </p>

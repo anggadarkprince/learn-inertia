@@ -6,8 +6,13 @@ import Pagination from "@/Components/Pagination.jsx";
 import {Dropdown} from "@/Components/Dropdown.jsx";
 import Icon from "@/Components/Icon.jsx";
 import Button from "@/Components/Button.jsx";
+import {useState} from "react";
+import Confirm from "../../Components/Confirm.jsx";
 
 export default function Index({categories}) {
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [category, setCategory] = useState(null);
+
     const handlePageChange = (url) => {
         if (!url) return;
 
@@ -49,7 +54,11 @@ export default function Index({categories}) {
                             </td>
                         </tr>
                     }>
-                        <CategoryData categories={categories}/>
+                        <CategoryData
+                            categories={categories}
+                            setShowDeleteDialog={setShowDeleteDialog}
+                            setCategory={setCategory}
+                        />
                     </Deferred>
                     </tbody>
                 </table>
@@ -57,11 +66,22 @@ export default function Index({categories}) {
                     <Pagination links={categories?.links} onPageChange={handlePageChange}/>
                 </div>
             </div>
+            <Confirm
+                title={"Delete Category"}
+                message={`Are you sure want to delete category ${category?.category}?`}
+                submessage={"The deleted items cannot be reversed"}
+                isOpen={showDeleteDialog}
+                setIsOpen={setShowDeleteDialog}
+                positiveButton="Delete"
+                negativeButton="Cancel"
+                positiveColor={"red"}
+                onPositiveClicked={() => router.delete(route('categories.destroy', {category}))}
+            />
         </App>
     )
 }
 
-const CategoryData = ({categories}) => {
+const CategoryData = ({categories, setCategory, setShowDeleteDialog}) => {
     return categories?.data?.map((category, index) => (
         <tr key={category.id} className="border-b border-gray-200 dark:border-gray-600">
             <td className="px-1.5 py-1 text-center">{categories.from + index}</td>
@@ -81,7 +101,12 @@ const CategoryData = ({categories}) => {
                             <Icon name="pencil"/> Edit
                         </Dropdown.Item>
                         <Dropdown.Separator/>
-                        <Dropdown.Item href={route('categories.destroy', {category})} method="delete" as="button">
+                        <Dropdown.Item
+                            onClick={() => {
+                                setCategory(category);
+                                setShowDeleteDialog(true);
+                            }}
+                            as="button">
                             <Icon name="trash"/> Delete
                         </Dropdown.Item>
                     </Dropdown.Menu>

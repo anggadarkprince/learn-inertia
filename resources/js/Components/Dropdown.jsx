@@ -26,19 +26,27 @@ Dropdown.Menu = ({children}) => {
     );
 };
 
-Dropdown.Item = ({children, href, prefetch, method, ...props}) => {
+Dropdown.Item = ({children, href, prefetch, method, onClick, ...props}) => {
+    const className = 'px-3 py-1.5 w-full flex gap-2 data-[focus]:bg-purple-50 dark:data-[focus]:bg-gray-800';
     return (
         <MenuItem>
-            {() => (
-                <Link
-                    {...(prefetch !== undefined ? {prefetch} : {})}
-                    {...(method ? {href, method} : {href})}
-                    {...props}
-                    className="px-3 py-1.5 w-full flex gap-2 data-[focus]:bg-purple-50 dark:data-[focus]:bg-gray-800"
-                >
-                    {children}
-                </Link>
-            )}
+            {() => onClick
+                ? (
+                    <button type={"button"} onClick={onClick} className={className}>
+                        {children}
+                    </button>
+                )
+                : (
+                    <Link
+                        {...(prefetch !== undefined ? {prefetch} : {})}
+                        {...(method ? {href, method} : {href})}
+                        {...props}
+                        className={className}
+                    >
+                        {children}
+                    </Link>
+                )
+            }
         </MenuItem>
     );
 };

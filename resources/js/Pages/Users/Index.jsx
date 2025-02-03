@@ -1,12 +1,17 @@
-import {Deferred, Head} from '@inertiajs/react'
+import {Deferred, Head, router} from '@inertiajs/react'
 import {route} from "ziggy-js";
 import App from "@/Layouts/App.jsx";
 import Pagination from "@/Components/Pagination.jsx";
 import {Dropdown} from "@/Components/Dropdown.jsx";
 import Icon from "@/Components/Icon.jsx";
 import Button from "@/Components/Button.jsx";
+import {useState} from "react";
+import Confirm from "../../Components/Confirm.jsx";
 
 export default function Index({users}) {
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [user, setUser] = useState(null);
+
     return (
         <App>
             <Head title="Users" />
@@ -38,7 +43,11 @@ export default function Index({users}) {
                             </td>
                         </tr>
                     }>
-                        <UserData users={users}/>
+                        <UserData
+                            users={users}
+                            setShowDeleteDialog={setShowDeleteDialog}
+                            setUser={setUser}
+                        />
                     </Deferred>
                     </tbody>
                 </table>
@@ -46,11 +55,22 @@ export default function Index({users}) {
                     <Pagination links={users?.links}/>
                 </div>
             </div>
+            <Confirm
+                title={"Delete User"}
+                message={`Are you sure want to delete user ${user?.name}?`}
+                submessage={"The deleted items cannot be reversed"}
+                isOpen={showDeleteDialog}
+                setIsOpen={setShowDeleteDialog}
+                positiveButton="Delete"
+                negativeButton="Cancel"
+                positiveColor={"red"}
+                onPositiveClicked={() => router.delete(route('users.destroy', {user}))}
+            />
         </App>
     )
 }
 
-const UserData = ({users}) => {
+const UserData = ({users, setShowDeleteDialog, setUser}) => {
     return users?.data?.map((user, index) => (
         <tr key={user.id} className="border-b border-gray-200 dark:border-gray-600">
             <td className="px-1.5 py-1 text-center">{users.from + index}</td>
@@ -70,7 +90,12 @@ const UserData = ({users}) => {
                             <Icon name="pencil"/> Edit
                         </Dropdown.Item>
                         <Dropdown.Separator/>
-                        <Dropdown.Item href={route('users.destroy', {user})} method="delete" as="button">
+                        <Dropdown.Item
+                            onClick={() => {
+                                setUser(user);
+                                setShowDeleteDialog(true);
+                            }}
+                            as="button">
                             <Icon name="trash"/> Delete
                         </Dropdown.Item>
                     </Dropdown.Menu>

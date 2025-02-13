@@ -7,10 +7,16 @@ use App\Repositories\UserRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 
 class UserService
 {
     public function __construct(private readonly UserRepository $userRepository) {}
+
+    public function getAll()
+    {
+        return $this->userRepository->getAll();
+    }
 
     public function getAllPaginated(Request $request)
     {
@@ -42,6 +48,8 @@ class UserService
         if (empty($data['password'])) {
             unset($data['password']);
         }
+
+        Cache::delete('auth.user');
 
         return $this->userRepository->update($user, $data);
     }

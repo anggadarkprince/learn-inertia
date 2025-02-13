@@ -1,16 +1,16 @@
 import {Head, router} from '@inertiajs/react'
-import App from "@/Layouts/App.jsx";
+import Main from "@/Layouts/Main.jsx";
 import {formatDate} from "date-fns";
 import Button from "../../Components/Button.jsx";
 import {route} from "ziggy-js";
 
 export default function Show({category}) {
     return (
-        <App>
+        <Main>
             <Head title={category.category}/>
             <div className="space-y-3">
                 <div className="rounded bg-white dark:bg-gray-900 p-5">
-                    <h1 className="text-lg font-medium mb-3">View category</h1>
+                    <h1 className="text-lg font-medium mb-3">View Category</h1>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-base mb-3">
                         <div className="space-y-2">
@@ -47,6 +47,6 @@ export default function Show({category}) {
                     </Button>
                 </div>
             </div>
-        </App>
+        </Main>
     )
 }

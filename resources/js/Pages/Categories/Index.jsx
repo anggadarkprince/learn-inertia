@@ -1,7 +1,7 @@
-import {Deferred, Head, Link, router, usePage} from '@inertiajs/react'
+import {Deferred, Head, router} from '@inertiajs/react'
 import {formatDate} from "date-fns";
 import {route} from "ziggy-js";
-import App from "@/Layouts/App.jsx";
+import Main from "@/Layouts/Main.jsx";
 import Pagination from "@/Components/Pagination.jsx";
 import {Dropdown} from "@/Components/Dropdown.jsx";
 import Icon from "@/Components/Icon.jsx";
@@ -11,6 +11,7 @@ import Confirm from "../../Components/Confirm.jsx";
 
 export default function Index({categories}) {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [category, setCategory] = useState(null);
 
     const handlePageChange = (url) => {
@@ -24,7 +25,7 @@ export default function Index({categories}) {
     };
 
     return (
-        <App>
+        <Main>
             <Head title="Categories" />
             <div className="rounded bg-white dark:bg-gray-900 p-5">
                 <div className="flex items-center justify-between mb-3">
@@ -72,12 +73,19 @@ export default function Index({categories}) {
                 submessage={"The deleted items cannot be reversed"}
                 isOpen={showDeleteDialog}
                 setIsOpen={setShowDeleteDialog}
+                disabled={isDeleting}
                 positiveButton="Delete"
                 negativeButton="Cancel"
                 positiveColor={"red"}
-                onPositiveClicked={() => router.delete(route('categories.destroy', {category}))}
+                onPositiveClicked={() => {
+                    setIsDeleting(true);
+                    router.delete(route('categories.destroy', {category}), {
+                        onSuccess: () => setShowDeleteDialog(false),
+                        onFinish: () => setIsDeleting(false),
+                    });
+                }}
             />
-        </App>
+        </Main>
     )
 }
 

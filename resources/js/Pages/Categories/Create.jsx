@@ -1,6 +1,6 @@
 import {Head, useForm} from '@inertiajs/react'
 import {route} from "ziggy-js";
-import App from "@/Layouts/App.jsx";
+import Main from "@/Layouts/Main.jsx";
 import Input from "@/Components/Input.jsx";
 import TextArea from "@/Components/TextArea.jsx";
 import Button from "@/Components/Button.jsx";
@@ -25,10 +25,10 @@ export default function Create() {
     }
 
     return (
-        <App>
+        <Main>
             <Head title="Create Category" />
             <div className="rounded bg-white dark:bg-gray-900 p-5">
-                <h1 className="text-lg font-medium mb-3">Create new category</h1>
+                <h1 className="text-lg font-medium mb-3">Create New Category</h1>
                 <form onSubmit={submit} className="flex flex-col gap-4">
                     <Input
                         type="text"
@@ -57,6 +57,6 @@ export default function Create() {
                     </div>
                 </form>
             </div>
-        </App>
+        </Main>
     )
 }

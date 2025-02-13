@@ -1,6 +1,6 @@
 import {Head, useForm} from '@inertiajs/react'
 import {route} from "ziggy-js";
-import App from "@/Layouts/App.jsx";
+import Main from "@/Layouts/Main.jsx";
 import Input from "@/Components/Input.jsx";
 import Button from "@/Components/Button.jsx";
 import ProgressBar from "@/Components/ProgressBar.jsx";
@@ -32,10 +32,10 @@ export default function Edit({user}) {
     }
 
     return (
-        <App>
-            <Head title="Edit User" />
+        <Main>
+            <Head title={`Edit User ${user.name}`} />
             <div className="rounded bg-white dark:bg-gray-900 p-5">
-                <h1 className="text-lg font-medium mb-3">Edit user</h1>
+                <h1 className="text-lg font-medium mb-3">Edit User</h1>
                 <form onSubmit={submit} className="flex flex-col gap-4">
                     <Input
                         type="text"
@@ -109,6 +109,6 @@ export default function Edit({user}) {
                     </div>
                 </form>
             </div>
-        </App>
+        </Main>
     )
 }

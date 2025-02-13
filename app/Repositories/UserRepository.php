@@ -11,6 +11,11 @@ class UserRepository
     {
     }
 
+    public function getAll()
+    {
+        return $this->user->all();
+    }
+
     public function getAllPaginated(Request $request)
     {
         return $this->user->query()

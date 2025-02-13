@@ -1,10 +1,10 @@
 import {Head} from '@inertiajs/react'
-import App from "../../Layouts/App.jsx";
+import Main from "../../Layouts/Main.jsx";
 import {route} from "ziggy-js";
 
 export default function Index({ user }) {
     return (
-        <App>
+        <Main>
             <Head title="Dashboard"/>
             <div className="rounded bg-white dark:bg-gray-900 p-5">
                 <div className="flex items-center justify-between mb-3">
@@ -14,6 +14,6 @@ export default function Index({ user }) {
                     </div>
                 </div>
             </div>
-        </App>
+        </Main>
     )
 }

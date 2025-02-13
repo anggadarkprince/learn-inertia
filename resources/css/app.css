@@ -6,7 +6,7 @@
     scrollbar-color: rgb(37, 99, 235 / var(--tw-bg-opacity)) rgb(226 232 240 / var(--tw-bg-opacity));
     scrollbar-width: thin;
     scroll-behavior: smooth;
-    scrollbar-gutter: stable;
+    /*scrollbar-gutter: stable;*/
 }
 .dark.scroll-wrapper {
     scrollbar-color: rgb(51 65 85 / var(--tw-bg-opacity)) rgb(15 23 42 / var(--tw-bg-opacity));

@@ -3,9 +3,25 @@ import {route} from "ziggy-js";
 import Main from "@/Layouts/Main.jsx";
 import Button from "@/Components/Button.jsx";
 import Datepicker from "@/Components/Datepicker.jsx";
-import {formatDate, subDays} from "date-fns";
+import {format, isValid, parse, subDays} from "date-fns";
 import Select from "@/Components/Select.jsx";
 import TextArea from "@/Components/TextArea.jsx";
+import {z} from "zod";
+
+const schema = z.object({
+    date: z.string().trim().min(1, 'Date is required')
+        .refine((val) => {
+            return isValid(parse(val, 'dd MMMM y', new Date()));
+        }, {
+            message: `Invalid date format. Use a valid date string (Eg. ${format(new Date(), 'dd MMMM y')}).`,
+        }),
+    pic_id: z.number().int().positive('PIC is required'),
+    category_id: z.number().int().positive('Category is required'),
+    description: z.string().max(500, 'Maximum description is 500 characters')
+        .optional()
+        .nullable()
+        .or(z.literal("")),
+});
 
 export default function Edit({schedule, users, categories}) {
     const {
@@ -14,9 +30,10 @@ export default function Edit({schedule, users, categories}) {
         put,
         processing,
         errors,
+        setError,
         clearErrors,
     } = useForm({
-        date: schedule.date,
+        date: format(schedule.date, 'dd MMMM y'),
         pic_id: schedule.pic_id,
         category_id: schedule.category_id,
         description: schedule.description,
@@ -24,9 +41,28 @@ export default function Edit({schedule, users, categories}) {
 
     function submit(e) {
         e.preventDefault();
-        setData('date', formatDate(data.date, 'y-MM-d'));
-        clearErrors();
-        put(route('schedules.update', {schedule}));
+        const validateData = {
+            ...data,
+            pic_id: +data.pic_id,
+            category_id: +data.category_id,
+        }
+        const result = schema.safeParse(validateData);
+        if (result.success) {
+            setData('date', format(data.date, 'y-MM-d'));
+            clearErrors();
+            put(route('schedules.update', {schedule}), {
+                onError: () => {
+                    setData('date', format(data.date, 'dd MMMM y'));
+                }
+            });
+        } else {
+            const validationErrors = result.error.format();
+            const parsedErrors = Object.keys(data).reduce((errors, property) => {
+                errors[property] = validationErrors[property]?._errors || "";
+                return errors;
+            }, {});
+            setError(parsedErrors);
+        }
     }
 
     return (
@@ -41,10 +77,9 @@ export default function Edit({schedule, users, categories}) {
                         name="date"
                         minDate={subDays(new Date(), 1)}
                         value={data.date}
-                        onChange={date => setData('date', date ? formatDate(date, 'dd MMMM yyyy') : '')}
+                        onChange={date => setData('date', date ? format(date, 'dd MMMM yyyy') : '')}
                         disabled={processing}
                         error={errors.date}
-                        required
                     />
                     <Select
                         label="Person In Charge"
@@ -54,7 +89,6 @@ export default function Edit({schedule, users, categories}) {
                         onChange={e => setData('pic_id', e.target.value)}
                         disabled={processing}
                         error={errors.pic_id}
-                        required
                     >
                         {users.map(user => (
                             <option key={user.id} value={user.id}>
@@ -70,7 +104,6 @@ export default function Edit({schedule, users, categories}) {
                         onChange={e => setData('category_id', e.target.value)}
                         disabled={processing}
                         error={errors.category_id}
-                        required
                     >
                         {categories.map(category => (
                             <option key={category.id} value={category.id}>

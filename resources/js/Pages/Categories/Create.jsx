@@ -1,9 +1,20 @@
 import {Head, useForm} from '@inertiajs/react'
 import {route} from "ziggy-js";
+import {z} from "zod";
 import Main from "@/Layouts/Main.jsx";
 import Input from "@/Components/Input.jsx";
 import TextArea from "@/Components/TextArea.jsx";
 import Button from "@/Components/Button.jsx";
+import {validate} from "@/helpers.js";
+import {useEffect} from "react";
+
+const schema = z.object({
+    category: z.string().trim().min(1, 'Category is required'),
+    description: z.string().max(500, 'Maximum description is 500 characters')
+        .optional()
+        .nullable()
+        .or(z.literal("")),
+});
 
 export default function Create() {
     const {
@@ -12,16 +23,22 @@ export default function Create() {
         post,
         processing,
         errors,
+        setError,
         clearErrors,
     } = useForm({
         category: '',
         description: '',
-    })
+    });
+
+    useEffect(() => {
+        validate(schema, data, setError, clearErrors);
+    }, [data]);
 
     function submit(e) {
         e.preventDefault();
-        clearErrors();
-        post(route('categories.store'));
+        if (validate(schema, data, setError, clearErrors)) {
+            post(route('categories.store'));
+        }
     }
 
     return (
@@ -38,8 +55,7 @@ export default function Create() {
                         value={data.category}
                         onChange={e => setData('category', e.target.value)}
                         disabled={processing}
-                        error={errors.category}
-                        required/>
+                        error={errors.category}/>
                     <TextArea
                         label="Description"
                         placeholder="Category description"
@@ -47,8 +63,7 @@ export default function Create() {
                         value={data.description}
                         onChange={e => setData('description', e.target.value)}
                         disabled={processing}
-                        error={errors.description}
-                        required/>
+                        error={errors.description}/>
 
                     <div className="mt-4 text-end">
                         <Button type="submit" disabled={processing}>

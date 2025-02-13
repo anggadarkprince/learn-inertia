@@ -23,6 +23,7 @@
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "tailwind-datepicker-react": "^1.4.3",
-        "ziggy-js": "^2.4.2"
+        "ziggy-js": "^2.4.2",
+        "zod": "^3.24.2"
     }
 }

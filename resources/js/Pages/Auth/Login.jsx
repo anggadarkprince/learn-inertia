@@ -5,14 +5,22 @@ import Alert from "@/Components/Alert.jsx";
 import {useState} from "react";
 import Button from "@/Components/Button.jsx";
 import Input from "@/Components/Input.jsx";
+import {z} from "zod";
+
+const schema = z.object({
+    username: z.string().trim().min(1, 'Username is required'),
+    password: z.string().trim().min(1, 'Password is required'),
+});
 
 export default function Login() {
     const {flash, errors} = usePage().props;
+
     const currentMessage = flash.message || errors.message;
     const [data, setData] = useState({
         username: "",
         password: "",
     });
+    const [validationError, setValidationError] = useState({username: '', password: ''});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     function handleChange(e) {
@@ -27,14 +35,23 @@ export default function Login() {
     function handleSubmit(e) {
         e.preventDefault();
 
-        setIsSubmitting(true);
-
-        router.post(route('auth.login'), data, {
-            preserveScroll: true,
-            onFinish: () => {
-                setIsSubmitting(false);
-            },
-        });
+        const result = schema.safeParse(data);
+        if (result.success) {
+            setIsSubmitting(true);
+            setValidationError({username: '', password: ''});
+            router.post(route('auth.login'), data, {
+                preserveScroll: true,
+                onFinish: () => {
+                    setIsSubmitting(false);
+                },
+            });
+        } else {
+            const validationErrors = result.error.format();
+            setValidationError({
+                username: validationErrors?.username?._errors || "",
+                password: validationErrors?.password?._errors || "",
+            });
+        }
     }
 
     return (
@@ -64,8 +81,7 @@ export default function Login() {
                     value={data.username}
                     onChange={handleChange}
                     disabled={isSubmitting}
-                    error={errors.password}
-                    required/>
+                    error={errors.username || validationError.username}/>
                 <Input
                     type="password"
                     label="Password"
@@ -74,8 +90,7 @@ export default function Login() {
                     value={data.password}
                     onChange={handleChange}
                     disabled={isSubmitting}
-                    error={errors.password}
-                    required/>
+                    error={errors.password || validationError.password}/>
 
                 <div className="mt-3">
                     <Button type="submit" block disabled={isSubmitting}>

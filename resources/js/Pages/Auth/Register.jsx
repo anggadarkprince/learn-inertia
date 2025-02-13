@@ -5,6 +5,36 @@ import FormError from "@/Components/ErrorText.jsx";
 import Alert from "@/Components/Alert.jsx";
 import Button from "@/Components/Button.jsx";
 import Input from "@/Components/Input.jsx";
+import {z} from "zod";
+
+const schema = z.object({
+    name: z.string().trim()
+        .min(1, 'Name is required')
+        .max(50, 'Name must be less than 50 characters'),
+    username: z.string().min(3, 'Username must be at least 3 characters')
+        .max(20, 'Username must be less than 20 characters')
+        .regex(/^[a-zA-Z0-9_.\-]+$/, 'Username can only contain letters, numbers, period, dash and underscores'),
+    email: z.string()
+        .email('Invalid email format')
+        .max(100, 'Email must be less than 100 characters'),
+    password: z.string()
+        .min(6, 'Password must be at least 6 characters')
+        .max(40, 'Password must be less than 40 characters')
+        .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+        .regex(/\d/, 'Password must contain at least one number')
+        .regex(/[^a-zA-Z0-9]/, 'Password must contain at least one special character'),
+    password_confirmation: z.string(),
+    agreement: z.preprocess(
+        (val) => Number(val),
+        z.number().refine((val) => val === 1, {
+            message: "You must agree to continue",
+        })
+    )
+}).refine((data) => data.password === data.password_confirmation, {
+    message: "Passwords do not match",
+    path: ["password_confirmation"], // Error message will be attached to password_confirmation field
+});
 
 export default function Register() {
     const {flash} = usePage().props;
@@ -14,6 +44,7 @@ export default function Register() {
         post,
         processing,
         errors,
+        setError,
         reset,
     } = useForm({
         name: "",
@@ -33,10 +64,19 @@ export default function Register() {
 
     function handleSubmit(e) {
         e.preventDefault();
-
-        post(route('auth.register'), {
-            onSuccess: () => reset(),
-        });
+        const result = schema.safeParse(data);
+        if (result.success) {
+            post(route('auth.register'), {
+                onSuccess: () => reset(),
+            });
+        } else {
+            const validationErrors = result.error.format();
+            const parsedErrors = Object.keys(data).reduce((errors, property) => {
+                errors[property] = validationErrors[property]?._errors || "";
+                return errors;
+            }, {});
+            setError(parsedErrors);
+        }
     }
 
     return (
@@ -67,8 +107,7 @@ export default function Register() {
                     value={data.name}
                     onChange={handleChange}
                     disabled={processing}
-                    error={errors.name}
-                    required/>
+                    error={errors.name}/>
 
                 <Input
                     type="text"
@@ -78,8 +117,7 @@ export default function Register() {
                     value={data.username}
                     onChange={handleChange}
                     disabled={processing}
-                    error={errors.username}
-                    required/>
+                    error={errors.username}/>
 
                 <Input
                     type="email"
@@ -89,8 +127,7 @@ export default function Register() {
                     value={data.email}
                     onChange={handleChange}
                     disabled={processing}
-                    error={errors.email}
-                    required/>
+                    error={errors.email}/>
 
                 <Input
                     type="password"
@@ -100,8 +137,7 @@ export default function Register() {
                     value={data.password}
                     onChange={handleChange}
                     disabled={processing}
-                    error={errors.password}
-                    required/>
+                    error={errors.password}/>
 
                 <Input
                     type="password"
@@ -111,8 +147,7 @@ export default function Register() {
                     value={data.password_confirmation}
                     onChange={handleChange}
                     disabled={processing}
-                    error={errors.password_confirmation}
-                    required/>
+                    error={errors.password_confirmation}/>
 
                 <div>
                     <div className="flex items-center">
@@ -122,8 +157,7 @@ export default function Register() {
                             onChange={(e) => setData('agreement', e.target.checked)}
                             name="agreement"
                             id="agreement"
-                            disabled={processing}
-                            required/>
+                            disabled={processing}/>
                         <label htmlFor="agreement" className="text-sm text-gray-700 dark:text-gray-400 ms-2">
                             I agree with terms & conditions
                         </label>

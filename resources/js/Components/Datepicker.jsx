@@ -11,6 +11,7 @@ export default function Datepicker({
                                        maxDate,
                                        minDate,
                                        format = 'dd MMMM yyyy',
+                                       clearLabel = 'Clear',
                                        value,
                                        show = false,
                                        setShow,
@@ -20,6 +21,7 @@ export default function Datepicker({
                                        required,
                                        error
                                    }) {
+
     const datepickerRef = useRef(null);
     if (value && typeof value === 'string') {
         value = new Date(value);
@@ -30,6 +32,13 @@ export default function Datepicker({
     useEffect(() => {
         function handleClickOutside(event) {
             if (datepickerRef.current && !datepickerRef.current.contains(event.target)) {
+                handleVisibility(false);
+            }
+            if (
+                event.target.tagName.toLowerCase() === "button" &&
+                event.target.innerHTML === clearLabel
+            ) {
+                handleChange(null);
                 handleVisibility(false);
             }
         }
@@ -58,7 +67,7 @@ export default function Datepicker({
         autoHide: true,
         todayBtn: true,
         clearBtn: true,
-        clearBtnText: "Clear",
+        clearBtnText: clearLabel,
         maxDate: maxDate,
         minDate: minDate,
         theme: {

@@ -1,10 +1,49 @@
 import {Head, useForm} from '@inertiajs/react'
 import {route} from "ziggy-js";
+import {z} from "zod";
 import Main from "@/Layouts/Main.jsx";
 import Input from "@/Components/Input.jsx";
 import Button from "@/Components/Button.jsx";
 import ProgressBar from "@/Components/ProgressBar.jsx";
 import FileInput from "@/Components/FileInput.jsx";
+
+const schema = z.object({
+    name: z.string().trim()
+        .min(1, 'Name is required')
+        .max(50, 'Name must be less than 50 characters'),
+    username: z.string().min(3, 'Username must be at least 3 characters')
+        .max(20, 'Username must be less than 20 characters')
+        .regex(/^[a-zA-Z0-9_.\-]+$/, 'Username can only contain letters, numbers, period, dash and underscores'),
+    email: z.string()
+        .email('Invalid email format')
+        .max(100, 'Email must be less than 100 characters'),
+    password: z.string()
+        .optional()
+        .or(z.literal(""))
+        .refine((val) => !val || (val && val.length >= 6), {
+            message: "New password must be at least 6 characters",
+        })
+        .refine((val) => val === "" || val.length <= 40, {
+            message: "Password must be less than 40 characters",
+        })
+        .refine((val) => val === "" || /[A-Z]/.test(val), {
+            message: "Password must contain at least one uppercase letter",
+        })
+        .refine((val) => val === "" || /[a-z]/.test(val), {
+            message: "Password must contain at least one lowercase letter",
+        })
+        .refine((val) => val === "" || /\d/.test(val), {
+            message: "Password must contain at least one number",
+        })
+        .refine((val) => val === "" || /[^a-zA-Z0-9]/.test(val), {
+            message: "Password must contain at least one special character",
+        }),
+    password_confirmation: z.string().optional().or(z.literal("")),
+    avatar: z.string().optional().nullable(),
+}).refine((data) => data.password === data.password_confirmation, {
+    message: "Passwords do not match",
+    path: ["password_confirmation"],
+});
 
 export default function Edit({user}) {
     const {
@@ -13,6 +52,7 @@ export default function Edit({user}) {
         post,
         processing,
         errors,
+        setError,
         clearErrors,
         progress,
     } = useForm({
@@ -23,12 +63,22 @@ export default function Edit({user}) {
         password: '',
         password_confirmation: '',
         avatar: '',
-    })
+    });
 
     function submit(e) {
         e.preventDefault();
-        clearErrors();
-        post(route('users.update', {user}));
+        const result = schema.safeParse(data);
+        if (result.success) {
+            clearErrors();
+            post(route('users.update', {user}));
+        } else {
+            const validationErrors = result.error.format();
+            const parsedErrors = Object.keys(data).reduce((errors, property) => {
+                errors[property] = validationErrors[property]?._errors || "";
+                return errors;
+            }, {});
+            setError(parsedErrors);
+        }
     }
 
     return (
@@ -45,8 +95,7 @@ export default function Edit({user}) {
                         value={data.name}
                         onChange={e => setData('name', e.target.value)}
                         disabled={processing}
-                        error={errors.name}
-                        required/>
+                        error={errors.name}/>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Input
                             type="text"
@@ -56,8 +105,7 @@ export default function Edit({user}) {
                             value={data.username}
                             onChange={e => setData('username', e.target.value)}
                             disabled={processing}
-                            error={errors.username}
-                            required/>
+                            error={errors.username}/>
                         <Input
                             type="email"
                             label="Email"
@@ -66,8 +114,7 @@ export default function Edit({user}) {
                             value={data.email}
                             onChange={e => setData('email', e.target.value)}
                             disabled={processing}
-                            error={errors.email}
-                            required/>
+                            error={errors.email}/>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Input

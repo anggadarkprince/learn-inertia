@@ -6,7 +6,7 @@ export default function TextArea({rows = 3, label, value, id, name, onChange, di
         <div>
             <label htmlFor={id || name} className="text-sm text-gray-700 dark:text-gray-400 font-medium">{label}</label>
             <textarea
-                value={value || undefined}
+                value={value || ''}
                 onChange={onChange}
                 className={clsx([
                     'block w-full border px-3 py-2 rounded mt-1 text-sm disabled:bg-gray-100 dark:disabled:bg-gray-800 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-opacity-20 dark:text-gray-300',

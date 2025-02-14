@@ -26,12 +26,12 @@ export default function Show({category}) {
                         <div className="space-y-2">
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="font-medium">Created At</div>
-                                <div className="col-span-3">{formatDate(category.created_at, 'dd MMM yyy HH:mm')}</div>
+                                <div className="col-span-3">{formatDate(category.created_at, 'dd MMM y HH:mm')}</div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="font-medium">Updated At</div>
                                 <div className="col-span-3">
-                                    {category?.updated_at ? formatDate(category?.updated_at, 'dd MMM yyy HH:mm') : '-'}
+                                    {category?.updated_at ? formatDate(category?.updated_at, 'dd MMM y HH:mm') : '-'}
                                 </div>
                             </div>
                         </div>

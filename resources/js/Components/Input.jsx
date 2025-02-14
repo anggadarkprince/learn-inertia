@@ -6,7 +6,7 @@ export default function Input({type = 'text', label, value, id, name, onChange, 
             <label htmlFor={id || name} className="text-sm text-gray-700 dark:text-gray-400 font-medium">{label}</label>
             <input
                 type={type}
-                value={value.name || (value || '')}
+                value={value?.name || (value || '')}
                 onChange={onChange}
                 onFocus={onFocus}
                 onBlur={onBlur}

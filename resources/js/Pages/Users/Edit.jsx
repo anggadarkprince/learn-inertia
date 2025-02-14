@@ -91,7 +91,7 @@ export default function Edit({user}) {
                         type="text"
                         label="Name"
                         placeholder="User full name"
-                        name="category"
+                        name="name"
                         value={data.name}
                         onChange={e => setData('name', e.target.value)}
                         disabled={processing}

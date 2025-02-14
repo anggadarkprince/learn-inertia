@@ -37,12 +37,12 @@ export default function Show({user}) {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="font-medium">Created At</div>
-                                <div className="col-span-3">{formatDate(user.created_at, 'dd MMM yyy HH:mm')}</div>
+                                <div className="col-span-3">{formatDate(user.created_at, 'dd MMM y HH:mm')}</div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="font-medium">Updated At</div>
                                 <div className="col-span-3">
-                                    {user?.updated_at ? formatDate(user?.updated_at, 'dd MMM yyy HH:mm') : '-'}
+                                    {user?.updated_at ? formatDate(user?.updated_at, 'dd MMM y HH:mm') : '-'}
                                 </div>
                             </div>
                         </div>

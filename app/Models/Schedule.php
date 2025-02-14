@@ -14,6 +14,10 @@ class Schedule extends Model
         'description',
     ];
 
+    protected $casts = [
+        'date' => 'date'
+    ];
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');

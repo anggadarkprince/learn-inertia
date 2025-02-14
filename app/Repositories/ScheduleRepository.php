@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 class ScheduleRepository
 {
@@ -23,10 +24,21 @@ class ScheduleRepository
             ->when($request->integer('pic_id'), function($query, $picId) {
                 $query->where('pic_id', '=', $picId);
             })
+            ->when($request->integer('category_id'), function($query, $categoryId) {
+                $query->where('category_id', '=', $categoryId);
+            })
             ->orderBy('id', 'desc')
             ->with(['pic', 'category'])
             ->paginate()
             ->withQueryString();
+    }
+
+    public function getByDate($date)
+    {
+        return $this->schedule->query()
+            ->whereDate('date', Date::parse($date)->format('Y-m-d'))
+            ->with(['pic', 'category'])
+            ->get();
     }
 
     public function create($data)

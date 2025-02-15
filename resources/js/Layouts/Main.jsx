@@ -20,14 +20,14 @@ export default function Main({children}) {
                             <p>Quick<span className="text-purple-600 font-bold">Turns</span></p>
                         </a>
                         <div className="flex items-center gap-3 px-6 mb-4">
-                            <img src={auth.user?.avatar_url ? auth.user.avatar_url : noAvatar}
+                            <img src={auth?.user?.avatar_url ? auth.user.avatar_url : noAvatar}
                                  className="w-10 h-10 rounded-full object-cover"
                                  alt="Avatar"/>
                             <div>
                                 <h4 className="font-semibold text-base text-gray-800 dark:text-gray-200 leading-tight">
-                                    {auth.user?.name}
+                                    {auth?.user?.name}
                                 </h4>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 leading-snug">{auth.user?.email}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 leading-snug">{auth?.user?.email}</p>
                             </div>
                         </div>
                         <div className="px-6 mb-4">
@@ -110,8 +110,8 @@ export default function Main({children}) {
                     </div>
                 </header>
                 <div className="p-3 text-gray-800 dark:text-gray-200">
-                    {(flash.message || errors.message) && (
-                        <Alert color={flash.status || errors.status} dismissible={true}>
+                    {(flash?.message || errors?.message) && (
+                        <Alert color={flash?.status || errors.status} dismissible={true}>
                             {flash.message || errors.message}
                         </Alert>
                     )}

@@ -1,4 +1,4 @@
-import {Head, router} from '@inertiajs/react'
+import {Head, Link, router} from '@inertiajs/react'
 import Main from "@/Layouts/Main.jsx";
 import {formatDate} from "date-fns";
 import Button from "../../Components/Button.jsx";
@@ -16,7 +16,7 @@ export default function Show({schedule}) {
                         <div className="space-y-2">
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="font-medium">Date</div>
-                                <div className="col-span-3">{schedule.date}</div>
+                                <div className="col-span-3">{formatDate(schedule.date, 'd MMMM y')}</div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="font-medium">Category</div>
@@ -30,7 +30,7 @@ export default function Show({schedule}) {
                         <div className="space-y-2">
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="font-medium">Description</div>
-                                <div className="col-span-3">{schedule.description}</div>
+                                <div className="col-span-3">{schedule.description || '-'}</div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-4">
                                 <div className="font-medium">Created At</div>
@@ -46,9 +46,55 @@ export default function Show({schedule}) {
                     </div>
                 </div>
 
+                <div className="rounded bg-white dark:bg-gray-900 p-5">
+                    <h1 className="text-lg font-medium mb-3">Tickets</h1>
+
+                    <table className="w-full text-base">
+                        <thead>
+                        <tr className="border-b border-gray-200 dark:border-gray-600">
+                            <th className="px-1.5 py-1 text-center">No</th>
+                            <th className="px-1.5 py-1 text-start">Ticket Number</th>
+                            <th className="px-1.5 py-1 text-start">Name</th>
+                            <th className="px-1.5 py-1 text-start">Phone</th>
+                            <th className="px-1.5 py-1 text-start">Email</th>
+                            <th className="px-1.5 py-1 text-center">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {schedule.tickets.map((ticket, index) => {
+                            return (
+                                <tr key={ticket.ticket_number}
+                                    className="border-b border-gray-200 dark:border-gray-600">
+                                    <td className="px-1.5 py-1 text-center">{index + 1}</td>
+                                    <td className="px-1.5 py-1">
+                                        <Link href={route('tickets.show', ticket)} className="text-purple-600 hover:text-purple-500">
+                                            {ticket.ticket_number}
+                                        </Link>
+                                    </td>
+                                    <td className="px-1.5 py-1">{ticket.name || '-'}</td>
+                                    <td className="px-1.5 py-1">{ticket.phone || '-'}</td>
+                                    <td className="px-1.5 py-1">{ticket.email || '-'}</td>
+                                    <td className="px-1.5 py-1 text-center">{ticket.status}</td>
+                                </tr>
+                            )
+                        })}
+                        {
+                            schedule.tickets.length === 0 && (
+                                <tr>
+                                    <td colSpan="7" className="text-center py-2">
+                                        No ticket data available
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+
                 <div className="flex justify-between rounded bg-white dark:bg-gray-900 p-5">
-                    <Button onClick={() => window.history.back()} disabled={window.history.length <= 1} color="light">
-                    ← Back
+                    <Button onClick={() => window.history.back()} disabled={window.history.length <= 1}
+                            color="light">
+                        ← Back
                     </Button>
                     <Button onClick={() => router.visit(route('schedules.edit', {schedule}))} color="warning">
                         Edit Schedule
@@ -56,5 +102,5 @@ export default function Show({schedule}) {
                 </div>
             </div>
         </Main>
-    )
+)
 }

@@ -63,7 +63,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule): Response|ResponseFactory
     {
-        $schedule->load(['pic', 'category']);
+        $schedule->load(['pic', 'category', 'tickets']);
 
         return inertia("Schedules/Show", compact('schedule'));
     }

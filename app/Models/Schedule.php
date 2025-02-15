@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Schedule extends Model
 {
@@ -26,5 +27,10 @@ class Schedule extends Model
     public function pic(): BelongsTo
     {
         return $this->belongsTo(User::class, 'pic_id', 'id');
+    }
+
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'schedule_id', 'id');
     }
 }

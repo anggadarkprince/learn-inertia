@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->text('description')->nullable();
             $table->text('note')->nullable();
-            $table->enum('status', ['OPEN', 'CLOSED'])->default('OPEN');
+            $table->enum('status', ['PENDING', 'OPEN', 'TAKEN', 'CLOSED'])->default('OPEN');
+            $table->dateTime('taken_at')->nullable();
             $table->dateTime('closed_at')->nullable();
             $table->timestamps();
         });

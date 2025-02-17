@@ -8,7 +8,7 @@ import Button from '@/Components/Button.jsx';
 import {useState} from 'react';
 import Confirm from '../../Components/Confirm.jsx';
 import {formatDate} from 'date-fns';
-import TicketStatus from "@/Pages/Tickets/Components/TicketStatus.jsx";
+import TicketStatus from '@/Pages/Tickets/Components/TicketStatus.jsx';
 
 export default function Index({tickets}) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -100,7 +100,9 @@ const TicketData = ({tickets, setShowDeleteDialog, setTicket}) => {
       <td className="px-1.5 py-1">{ticket.schedule?.pic?.name || 'No PIC'}</td>
       <td className="px-1.5 py-1">{ticket.queue}</td>
       <td className="px-1.5 py-1">{ticket.name || '-'}</td>
-      <td className="px-1.5 py-1"><TicketStatus label={ticket.status} /></td>
+      <td className="px-1.5 py-1">
+        <TicketStatus label={ticket.status} />
+      </td>
       <td className="px-1.5 py-1 text-center">
         <Dropdown>
           <Dropdown.Toggle>

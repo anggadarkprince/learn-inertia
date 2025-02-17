@@ -9,7 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/App.jsx'])
     @inertiaHead
 </head>
-<body>
+<body class="sm:overflow-visible">
 @inertia
 </body>
 </html>

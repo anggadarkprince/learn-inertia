@@ -5,6 +5,8 @@ import Icon from '@/Components/Icon.jsx';
 import {usePage} from '@inertiajs/react';
 import Alert from '@/Components/Alert.jsx';
 import {route} from 'ziggy-js';
+import {useEffect, useState} from 'react';
+import {clsx} from 'clsx';
 
 export default function Main({children}) {
   const {
@@ -12,11 +14,48 @@ export default function Main({children}) {
     url,
     component,
   } = usePage();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.matchMedia('(min-width: 640px)').matches) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [isSidebarOpen]);
 
   return (
     <div className="flex h-screen bg-purple-50 dark:bg-gray-800">
-      <div className="z-20 w-64 my-3 ms-3 overflow-y-auto overflow-clip scroll-wrapper">
-        <aside className="bg-white dark:bg-gray-900 md:block flex-shrink-0 shadow-sm rounded-lg">
+      <div
+        className={clsx([
+          'fixed h-screen sm:w-auto sm:static z-20 py-3 rounded-lg overflow-y-auto scroll-wrapper',
+          isSidebarOpen ? 'w-full ps-3' : 'ps-0',
+        ])}
+      >
+        {isSidebarOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 sm:hidden" onClick={() => setIsSidebarOpen(false)} />
+        )}
+        <aside
+          className={clsx([
+            'relative bg-white dark:bg-gray-900 md:block flex-shrink-0 shadow-sm rounded-lg',
+            isSidebarOpen ? 'w-64' : 'sm:overflow-y-hidden w-0',
+          ])}
+        >
           <div className="py-4 text-gray-700 dark:text-gray-400">
             <a
               className="flex gap-2 items-center justify-center dark:border-b-gray-700 pb-2 mx-4 text-xl font-medium text-gray-800 dark:text-gray-200 mb-4"
@@ -41,12 +80,15 @@ export default function Main({children}) {
               </div>
             </div>
             <div className="px-6 mb-4">
-              <button className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+              <a
+                href={route('tickets.create')}
+                className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+              >
                 Create Ticket
                 <span className="ms-2" aria-hidden="true">
                   +
                 </span>
-              </button>
+              </a>
             </div>
             <ul>
               <li className="relative px-6 py-2">
@@ -108,10 +150,13 @@ export default function Main({children}) {
           </div>
         </aside>
       </div>
-      <div className="flex flex-col flex-1 w-full overflow-y-auto scroll-wrapper">
-        <header className="z-10 py-4 bg-white dark:bg-gray-900 shadow-sm mx-3 mt-3 rounded-lg">
-          <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
-            <button className="p-1 mr-5 -ml-1 rounded-md hover:bg-purple-100 dark:hover:bg-gray-950 focus:outline-none focus:shadow-outline-purple">
+      <div className={clsx(['flex flex-col flex-1 w-full scroll-wrapper overflow-y-auto'])}>
+        <header className="py-4 bg-white dark:bg-gray-900 shadow-sm mx-3 mt-3 rounded-lg">
+          <div className="flex items-center justify-between h-full px-6 text-purple-600 dark:text-purple-300">
+            <button
+              className="p-1 mr-5 -ml-1 rounded-md hover:bg-purple-100 dark:hover:bg-gray-950 focus:outline-none focus:shadow-outline-purple"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
               <Icon name={'menu'} />
             </button>
             <div className="flex justify-center flex-1">

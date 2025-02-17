@@ -17,8 +17,8 @@ export default {
                 sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
             fontSize: {
-                xs: ['0.7rem'],
-                sm: ['0.8rem'],
+                xs: ['0.65rem'],
+                sm: ['0.78rem'],
                 base: ['0.9rem'],
             },
         },

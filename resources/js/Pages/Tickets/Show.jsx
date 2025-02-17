@@ -72,6 +72,37 @@ export default function Show({ticket}) {
           </div>
         </div>
 
+        <div className="rounded bg-white dark:bg-gray-900 p-5">
+          <h1 className="text-lg font-medium mb-3">Ticket Proceed</h1>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-base mb-3">
+            <div className="space-y-2">
+              <div className="grid grid-cols-1 md:grid-cols-4">
+                <div className="font-medium">Taken At</div>
+                <div className="col-span-3">
+                  {ticket?.taken_at ? formatDate(ticket?.taken_at, 'dd MMMM y HH:mm:ss') : '-'}
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4">
+                <div className="font-medium">Closed At</div>
+                <div className="col-span-3">
+                  {ticket?.closed_at ? formatDate(ticket?.closed_at, 'dd MMMM y HH:mm:ss') : '-'}
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="grid grid-cols-1 md:grid-cols-4">
+                <div className="font-medium">Handled By</div>
+                <div className="col-span-3">{ticket.handledBy?.name || 'Not assigned yet'}</div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4">
+                <div className="font-medium">Note</div>
+                <div className="col-span-3">{ticket.note || '-'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="flex justify-between rounded bg-white dark:bg-gray-900 p-5">
           <Button onClick={() => window.history.back()} disabled={window.history.length <= 1} color="light">
             ← Back

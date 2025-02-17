@@ -17,7 +17,7 @@ export default function Error404({message}) {
         <h1 className="text-5xl font-bold text-rose-500">404</h1>
         <div className="text-center mb-3">
           <p className="text-lg text-gray-700 dark:text-gray-500">Oops! The page you are looking for does not exist.</p>
-          <p className="text-sm text-gray-400 dark:text-gray-600">{message}</p>
+          <p className="text-sm text-gray-400 dark:text-gray-600">{message || 'Resource not found'}</p>
         </div>
         <Button href={route('dashboard')}>← Go Home</Button>
       </div>

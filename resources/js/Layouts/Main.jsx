@@ -17,7 +17,7 @@ export default function Main({children}) {
     <div className="flex h-screen bg-purple-50 dark:bg-gray-800">
       <div className="z-20 w-64 my-3 ms-3 overflow-y-auto overflow-clip scroll-wrapper">
         <aside className="bg-white dark:bg-gray-900 md:block flex-shrink-0 shadow-sm rounded-lg">
-          <div className="py-4 text-gray-500 dark:text-gray-400">
+          <div className="py-4 text-gray-700 dark:text-gray-400">
             <a
               className="flex gap-2 items-center justify-center dark:border-b-gray-700 pb-2 mx-4 text-xl font-medium text-gray-800 dark:text-gray-200 mb-4"
               href="/"
@@ -80,9 +80,24 @@ export default function Main({children}) {
                 </NavItem>
               </li>
               <li className="relative px-6 py-2">
-                <NavItem active={url.startsWith('/reports')} icon={'chart'} href={'/reports'}>
+                <NavItem active={url.startsWith('/reports')} icon={'chart'} href="#">
                   Reports
                 </NavItem>
+                <ul>
+                  <li className="ms-2 text-base py-1 text-gray-500">
+                    <NavItem
+                      active={url.startsWith('/reports/schedule-service-time')}
+                      href={route('reports.schedule-service-time')}
+                    >
+                      <Icon name="document" size="sm" /> Schedule Services
+                    </NavItem>
+                  </li>
+                  <li className="ms-2 text-base py-1 text-gray-500">
+                    <NavItem active={url.startsWith('/reports/ticket-summary')} href={route('reports.ticket-summary')}>
+                      <Icon name="document" size="sm" /> Ticket Summaries
+                    </NavItem>
+                  </li>
+                </ul>
               </li>
               <li className="relative px-6 py-2">
                 <NavItem icon={'logout'} href={route('auth.logout')} method="post" as="button">

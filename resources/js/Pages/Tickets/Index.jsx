@@ -8,6 +8,7 @@ import Button from '@/Components/Button.jsx';
 import {useState} from 'react';
 import Confirm from '../../Components/Confirm.jsx';
 import {formatDate} from 'date-fns';
+import TicketStatus from "@/Pages/Tickets/Components/TicketStatus.jsx";
 
 export default function Index({tickets}) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -37,6 +38,7 @@ export default function Index({tickets}) {
               <th className="px-1.5 py-1 text-start">PIC</th>
               <th className="px-1.5 py-1 text-start">Queue</th>
               <th className="px-1.5 py-1 text-start">Name</th>
+              <th className="px-1.5 py-1 text-start">Status</th>
               <th className="px-1.5 py-1 w-10">Action</th>
             </tr>
           </thead>
@@ -45,7 +47,7 @@ export default function Index({tickets}) {
               data="tickets"
               fallback={
                 <tr>
-                  <td colSpan="8" className="text-center py-2">
+                  <td colSpan="9" className="text-center py-2">
                     Loading...
                   </td>
                 </tr>
@@ -55,7 +57,7 @@ export default function Index({tickets}) {
             </Deferred>
             {tickets !== undefined && tickets.data.length === 0 && (
               <tr>
-                <td colSpan="8" className="text-center py-2">
+                <td colSpan="9" className="text-center py-2">
                   No ticket data available
                 </td>
               </tr>
@@ -98,6 +100,7 @@ const TicketData = ({tickets, setShowDeleteDialog, setTicket}) => {
       <td className="px-1.5 py-1">{ticket.schedule?.pic?.name || 'No PIC'}</td>
       <td className="px-1.5 py-1">{ticket.queue}</td>
       <td className="px-1.5 py-1">{ticket.name || '-'}</td>
+      <td className="px-1.5 py-1"><TicketStatus label={ticket.status} /></td>
       <td className="px-1.5 py-1 text-center">
         <Dropdown>
           <Dropdown.Toggle>

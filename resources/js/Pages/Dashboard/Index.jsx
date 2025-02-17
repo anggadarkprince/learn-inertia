@@ -1,6 +1,6 @@
 import {Head} from '@inertiajs/react';
 import Main from '../../Layouts/Main.jsx';
-import {formatDate} from "date-fns";
+import {formatDate} from 'date-fns';
 
 export default function Index({statistic}) {
   return (

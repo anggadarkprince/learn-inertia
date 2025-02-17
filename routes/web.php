@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
@@ -23,4 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('schedules', ScheduleController::class);
     Route::resource('tickets', TicketController::class);
+    Route::get('reports/schedule-service-time', [ReportController::class, 'scheduleServiceTime'])->name('reports.schedule-service-time');
+    Route::get('reports/ticket-summary', [ReportController::class, 'ticketSummary'])->name('reports.ticket-summary');
 });

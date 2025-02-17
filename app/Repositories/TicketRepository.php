@@ -23,7 +23,7 @@ class TicketRepository
                 $query->where('schedule_id', '=', $scheduleId);
             })
             ->orderBy('id', 'desc')
-            ->with(['schedule' => ['pic', 'category']])
+            ->with(['schedule' => ['pic', 'category'], 'handledBy'])
             ->paginate()
             ->withQueryString();
     }
@@ -41,7 +41,7 @@ class TicketRepository
         } else {
             $lastNumber = 0;
         }
-        $orderPad = str_pad((string) $lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        $orderPad = str_pad((string) ($lastNumber + 1), 4, '0', STR_PAD_LEFT);
 
         return 'TIC-' . date('ymd') . '-' . $orderPad;
     }

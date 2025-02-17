@@ -66,7 +66,7 @@ export default function Index({schedules}) {
       </div>
       <Confirm
         title={'Delete Schedule'}
-        message={`Are you sure want to delete schedule ${schedule?.date} (${schedule?.pic?.name})?`}
+        message={`Are you sure want to delete schedule ${schedule?.date ? formatDate(schedule.date, 'dd MMM y') : '-'} (${schedule?.pic?.name})?`}
         submessage={'The deleted items cannot be reversed'}
         isOpen={showDeleteDialog}
         setIsOpen={setShowDeleteDialog}
